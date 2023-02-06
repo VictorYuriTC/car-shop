@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import Car from '../../../src/Domains/Car';
 import ICar from '../../../src/Interfaces/ICar';
 import CarService from '../../../src/Services/CarService';
+import arrayWithCarsMock from '../../mocks/arrayWithCarsMock';
 
 describe('Test car service layer', function () {
   afterEach(sinon.restore);
@@ -90,5 +91,17 @@ describe('Test car service layer', function () {
     const service = new CarService();
     const result = await service.getById('634852326b35b59438fbea2f');
     expect(result).to.be.deep.equal(carOutput);
+  });
+
+  it('should get all cars correctly', async function () {
+    const someCarsFromDB = arrayWithCarsMock;
+
+    const getAllCarsOutput = someCarsFromDB;
+
+    sinon.stub(Model, 'find').resolves(getAllCarsOutput);
+
+    const service = new CarService();
+    const result = await service.getAll();
+    expect(result).to.be.deep.equal(getAllCarsOutput);
   });
 });
