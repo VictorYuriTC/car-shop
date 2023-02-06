@@ -67,7 +67,7 @@ class CarController {
           .status(404)
           .json({ message: 'Car not found' });
       }
-      console.log({ ...foundCar });
+
       const { model, color, year, status, buyValue, doorsQty, seatsQty } = foundCar;
       return this.res.status(200).json({
         id: foundCar._id, model, color, year, status, buyValue, doorsQty, seatsQty,
@@ -86,11 +86,23 @@ class CarController {
         .json({ message: 'Invalid mongo id' });
     }
 
+    const doesCarExist = await this.service.getById(id);
+
+    if (!doesCarExist) {
+      return this.res
+        .status(404)
+        .json({ message: 'Car not found' });
+    }
+
     try {
-      const updatedCar = await this.service.updateById(id);
+      const updatedCar = await this.service.updateById(id, this.req.body);
+      if (!updatedCar) return;
+      const { model, year, color, status, buyValue, doorsQty, seatsQty } = updatedCar;
       return this.res
         .status(200)
-        .json(updatedCar);
+        .json({
+          id: updatedCar._id, model, year, color, status, buyValue, doorsQty, seatsQty,
+        });
     } catch (error) {
       this.next(error);
     }

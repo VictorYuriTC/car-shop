@@ -27,9 +27,9 @@ class CarService {
     return foundCar;
   }
 
-  public async updateById(id: string) {
+  public async updateById(id: string, car: ICar) {
     const carODM = new CarODM();
-    const updatedCar = await carODM.updateById(id);
+    const updatedCar = await carODM.updateById(id, car);
     return updatedCar;
   }
 }
