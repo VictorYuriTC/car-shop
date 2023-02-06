@@ -5,8 +5,10 @@ import Car from '../../../src/Domains/Car';
 import ICar from '../../../src/Interfaces/ICar';
 import CarService from '../../../src/Services/CarService';
 
-describe('Test car service', function () {
-  it('should creates a new car when receiving allowed data', async function () {
+describe('Test car service layer', function () {
+  afterEach(sinon.restore);
+  
+  it('should create a new car when receiving allowed data', async function () {
     const carInput: ICar = {
       model: 'Fiesta',
       year: 1997,
